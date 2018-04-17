@@ -1,5 +1,5 @@
 RSpec.shared_context "clicks context", :shared_context => :metadata do
-  let(:new_click_returner) { ClickReturner.new(clicks_array) }
+  let(:click_returner) { ClickReturner.new(clicks_array) }
   let(:clicks_array) do
     [
       { ip:'22.22.22.22', timestamp:'3/11/2016 02:02:58', amount: 7.00 },
@@ -36,4 +36,5 @@ RSpec.shared_context "clicks context", :shared_context => :metadata do
       { ip:'22.22.22.22', timestamp:'3/11/2016 23:59:59', amount: 9.00 }
     ]
   end
+  let(:first_2am_click_hash_element) { { ip:'22.22.22.22', timestamp:'3/11/2016 02:02:58', amount: 7.00 } }
 end
