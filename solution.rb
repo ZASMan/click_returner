@@ -1,3 +1,4 @@
+require 'pry'
 class ClickReturner
   require 'time'
   require 'active_support/all'
@@ -8,56 +9,58 @@ class ClickReturner
   end
 
   def click_results
-    
+    hours_of_ip_into_array_of_ips
   end
 
-  def hash_with_ips_as_keys
-    ip_key_hash = {}
+  def array_of_ips_as_keys
+    array_of_ips_as_keys = []
     @clicks_array.each do |click|
       click_ip = click[:ip].to_s
-      unless ip_key_hash.has_key?(click_ip)
-        ip_key_hash[click_ip] = []
+      click_ip_hash_array = { click_ip => [] }
+      unless array_of_ips_as_keys.include?(click_ip_hash_array)
+        array_of_ips_as_keys.push(click_ip_hash_array)
       end
     end
-    ip_key_hash
+    array_of_ips_as_keys
   end
 
-  def hash_of_clicks_divided_by_ip
-    clicks_hash = hash_with_ips_as_keys
+  def ips_with_over_10_clicks
+    array_of_ips_as_keys = array_of_ips_as_keys
     @clicks_array.each do |click|
-      click_ip = click[:ip].to_s
-      clicks_hash[click_ip].push(click)
     end
-    clicks_hash
   end
 
-  def highest_value_per_ip
-    highest_value_hash = {}
-    amounts = []
-    hash_of_clicks_divided_by_ip.keys do |ip|
-      hash_of_clicks_divided_by_ip[ip].each do |click|
-        click_amount = click[:amount]
-        amounts.push(click_amount)
+  def hours_of_ip_into_array_of_ips
+    array_of_ips_as_keys = self.array_of_ips_as_keys
+    @clicks_array.each do |click|
+      array_of_ips_as_keys.each_with_index do |element, index|
+        binding.pry
+        ip_key = array_of_ips_as_keys[index].keys.first
+        click_ip_array = array_of_ips_as_keys[index][ip_key]
+        click_hour = click[:timestamp].to_time.hour.to_s
+        new_amount = click[:amount]
+        # Gets amount of last value for hour
+        if click_ip_array.length > 0 
+          last_amount = click_ip_array.last.values.first.first[:amount]
+          if new_amount > last_amount # Get rid of the last amount if it is less than the new amount
+            click_ip_array.pop
+            click_ip_by_hour = { click_hour => [click] }
+            click_ip_array.push(click_ip_by_hour) if ip_key == click[:ip]
+          elsif new_amount == last_amount
+            last_time_exact_time = click_ip_array.last.values.first.first[:timestamp].to_time
+            new_time_exact_time = click[:timestamp].to_time
+            if last_time_exact_time > new_time_exact_time # Otherwise ignore the later one
+              click_ip_array.pop
+              click_ip_by_hour = { click_hour => [click] }
+              click_ip_array.push(click_ip_by_hour) if ip_key == click[:ip]
+            end
+          end
+        else # Put the first click ins
+          click_ip_by_hour = { click_hour => [click] }
+          click_ip_array.push(click_ip_by_hour) if ip_key == click[:ip]
+        end
       end
     end
-  end
-
-  def hours_per_ip(ip_hash)
-    hours = []
-    ip_hash.each do |click|
-      click_hour = click[:timestamp].hour.to_s
-      hours.push(click_hour)
-    end
-    hours
-  end
-
-  def highest_amount_each_hour
-    hours = {}
-    clicks.map { |click| click[:timestamp].to_time }
-    clicks.each do |click|
-      # Create array for each hour with hour as key
-      click_hour = click[:timestamp].hour.to_s
-      hours[click_hour] = []
-    end
+    array_of_ips_as_keys
   end
 end
