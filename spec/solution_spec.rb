@@ -23,7 +23,6 @@ describe 'Click Returner' do
     context "More than one click from the same IP ties for the most expensive click in a one hour period" do
       it "should only place the earliest click into the result set" do
         click_returner.click_results
-        binding.pry
       end
     end
 
