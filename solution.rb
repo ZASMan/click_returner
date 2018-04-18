@@ -73,14 +73,21 @@ class ClickReturner
         # To the highest amount
         duplicates = []
         if clicks.length > 1
-          array_length = clicks.length
-          click_index = Array(0..array_length)
           highest_click = clicks.last
           # Dont modify original
           sorted_clicks = clicks.sort_by { |click| click[:timestamp].to_time }
+          highest_click_amount_clicks = []
+          sorted_clicks.each { |click| highest_click_amount_clicks.push(click) if click[:amount] == highest_click[:amount] }
+          # Sort by date occurred
+          sorted_highest_clicks = highest_click_amount_clicks.sort_by { |click| click[:timestamp].to_time }
+          highest_click = sorted_highest_clicks.first
           # Push the earliest click to array if its amount is equal to the greatest amount
           # But occured earlier
-          clicks.each { |click| duplicates.push(click) if click[:timestamp].to_time > highest_click[:timestamp].to_time }
+          clicks.each do |click|
+            if click[:timestamp].to_time > highest_click[:timestamp].to_time && click[:amount] >= highest_click[:amount]
+              duplicates.push(highest_click)
+            end
+          end
           # Duplicates will be equal to clicks that occurred before the highest amount one but have the same amount
           # Now re sort and return the earliest one
           if duplicates.length > 1

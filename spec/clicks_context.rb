@@ -1,6 +1,6 @@
 RSpec.shared_context "clicks context", :shared_context => :metadata do
   let(:click_returner) { ClickReturner.new(clicks_array) }
-  let(:click_returner_2am_hash) { ClickReturner.new(two_am_hash) }
+  let(:click_returner_2am_hash) { ClickReturner.new(two_am_hash_array) }
   let(:clicks_array) do
     [
       { ip:'22.22.22.22', timestamp:'3/11/2016 02:02:58', amount: 7.00 },
@@ -37,12 +37,11 @@ RSpec.shared_context "clicks context", :shared_context => :metadata do
       { ip:'22.22.22.22', timestamp:'3/11/2016 23:59:59', amount: 9.00 }
     ]
   end
-  let(:first_hash_element) { { ip:'22.22.22.22', timestamp:'3/11/2016 02:02:58', amount: 7.00 } }
   # New values added just for testing
   let(:lowest_value_2am_22_ip) { { ip:'22.22.22.22', timestamp:'3/11/2016 02:40:58', amount: 3.00 } }
   let(:middle_value_2am_22_ip) { { ip:'22.22.22.22', timestamp:'3/11/2016 02:20:40', amount: 5.00 } }
   # Also the earliest value
   let(:highest_earliest_result_2am_ip) { { ip:'22.22.22.22', timestamp:'3/11/2016 02:02:58', amount: 7.00 } }
   let(:highest_later_2am_result) { { ip:'22.22.22.22', timestamp:'3/11/2016 02:22:58', amount: 7.00 } }
-  let(:two_am_hash) { [highest_earliest_result_2am_ip, lowest_value_2am_22_ip, middle_value_2am_22_ip, highest_later_2am_result] }
+  let(:two_am_hash_array) { [highest_earliest_result_2am_ip, lowest_value_2am_22_ip, middle_value_2am_22_ip, highest_later_2am_result] }
 end
