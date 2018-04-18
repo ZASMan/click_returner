@@ -9,22 +9,6 @@ describe 'Click Returner' do
     it "should not raise errors on initialization" do
       expect { click_returner }.to_not raise_error
     end
-
-    it 'returns an array with clicks in hashes and blank arrays as values' do
-      array_of_ips_as_keys = click_returner.array_of_ips_as_keys
-      expect(array_of_ips_as_keys.length).to eq 6
-      expect(array_of_ips_as_keys.first.class).to eq Hash
-      expect(array_of_ips_as_keys.first["22.22.22.22"].class).to eq Array
-    end
-
-    it 'returns a hash with clicks divided by hours in ip address' do
-      hours_of_ip_into_array = click_returner.hours_of_ip_into_array_of_ips
-      expect(hours_of_ip_into_array.length).to eq 6
-      binding.pry
-      expect(hours_of_ip_into_array.first["22.22.22.22"].first).to eq(
-        {"2"=>[{:ip=>"22.22.22.22", :timestamp=>"3/11/2016 02:02:58", :amount=>7.0}]}
-      )
-    end
   end
 
   describe "Challenge Requirements" do 
@@ -66,8 +50,10 @@ describe 'Click Returner' do
         expect(number_of_elements).to eq 12
         # This initializers with clicks_array element, from the original problem
         results = click_returner.click_results
-        binding.pry
-        expect(2).to eq 2
+        results.each_with_index do |result, index|
+          expect(result.keys.first).to eq("11.11.11.11") if index == 0
+          expect(result.keys.first).not_to eq("22.22.22.22")
+        end
       end
     end
   end
