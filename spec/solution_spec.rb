@@ -9,6 +9,18 @@ describe 'Click Returner' do
     it "should not raise errors on initialization" do
       expect { click_returner }.to_not raise_error
     end
+
+    # Should have:
+    # { ip:'11.11.11.11', timestamp:'3/11/2016 02:13:11', amount: 7.25 },
+    # { ip:'11.11.11.11', timestamp:'3/11/2016 06:45:01', amount: 12.00 },
+    # { ip:'11.11.11.11', timestamp:'3/11/2016 07:02:54', amount: 4.50 },
+    it "should return the appropriate number of clicks for a given ip" do
+      results = click_returner.click_results
+      ip_11_results = results.first["11.11.11.11"]
+      binding.pry
+      expect(ip_11_results.length).to eq 3
+      #expect(ip_11_results.first.values.first).to eq { ip:'11.11.11.11', timestamp:'3/11/2016 02:13:11', amount: 7.25 }
+    end
   end
 
   describe "Challenge Requirements" do 

@@ -53,22 +53,24 @@ class ClickReturner
         hour = x.keys.first
         x[hour].first[:timestamp].to_time
       end
+      #binding.pry
       # Sort by hour again
-      length_of_values = values_by_hour.length
-      indexes_to_reject = Array.new.fill(0, 0..length_of_values)
-      values_by_hour.reject! do |value_hash|
-        indexes = indexes_to_reject
-        first_index = indexes.first
-        hour = value_hash.first[first_index]
-        indexes.shift # Gets rid of the last one
-        values = value_hash[hour].first # This needs to be the hour
-        highest_value_hash_hour = highest_value_hash.first.first
-        highest_value_hash_value = highest_value_hash[highest_value_hash_hour].first[:amount]
-        values[:amount] < highest_value_hash_value
-      end
-      while values_by_hour.length > 1 do
-        values_by_hour.pop
-      end
+      #length_of_values = values_by_hour.length
+      #indexes_to_reject = Array.new.fill(0, 0..length_of_values)
+      #values_by_hour.reject! do |value_hash|
+      #  indexes = indexes_to_reject
+      #  first_index = indexes.first
+      #  hour = value_hash.first[first_index]
+      #  indexes.shift # Gets rid of the last one
+      #  values = value_hash[hour].first # This needs to be the hour
+      #  highest_value_hash_hour = highest_value_hash.first.first
+      #  highest_value_hash_value = highest_value_hash[highest_value_hash_hour].first[:amount]
+      #  values[:amount] < highest_value_hash_value
+      #end
+      #binding.pry
+      #while values_by_hour.length > 1 do
+      #  values_by_hour.pop
+      #end
     end
     array_of_ips_as_keys
   end
